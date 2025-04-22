@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from models.user import User
 from database import db
-from flask_login import LoginManager, login_user, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required ,current_user
 
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ login_manager.login_view = 'login'
 
 @login_manager.user_loader
 def load_user(user_id):
-     return User.query.get(user_id4)
+     return User.query.get(user_id)
 
 
 @app.route('/login', methods=["POST"])
@@ -37,6 +37,13 @@ def login():
 
     return jsonify({"message": "Credenciais inválidas"}), 400
 
+
+@app.route('/logout', methods=['GET'])
+@login_required  # Essa anotação verifica se o usuario esta logado, protegendo a rota
+def logout():
+     logout_user()
+     return jsonify({"message": "Logout realizado com sucesso!"})
+     
 
 @app.route("/ola-mundo", methods=["GET"])
 def ola_mundo():
