@@ -1,12 +1,13 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from models.user import User
+from database import db
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "minha_chave_secreta"  # config chave de acesso ao bando
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'  # caminho do arquivo, o endereço do banco
  
-db = SQLAlchemy(app)
+db.init_app(app)
 
 
 @app.route("/ola-mundo", methods=["GET"])
