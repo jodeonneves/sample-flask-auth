@@ -98,9 +98,6 @@ def delete_user(id_user):
      return jsonify({"message": "Usuario não encontrado!"}), 404
 
 
-@app.route("/ola-mundo", methods=["GET"])
-def ola_mundo():
-    return "óla mundo"
-
 if __name__ == '__main__':
     app.run(debug=True)
+
