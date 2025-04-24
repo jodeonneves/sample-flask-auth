@@ -85,6 +85,19 @@ def update_user(id_user):
      return jsonify({"message": "Usuário não encontrado!"}), 400
 
 
+@app.route('/user/<int:id_user>', methods=["DELETE"])
+@login_required
+def delete_user(id_user):
+     user = User.query.get(id_user)
+
+     if user and id_user != current_user.id:  # "id_user != current_user.id" verificador se é o mesmo id logado, para nao fazer a deleção do proprio usuario.
+          db.session.delete(user)
+          db.session.commit()
+          return jsonify({"username": f"Usuário {id_user} deletado com sucesso!"})
+     
+     return jsonify({"message": "Usuario não encontrado!"}), 404
+
+
 @app.route("/ola-mundo", methods=["GET"])
 def ola_mundo():
     return "óla mundo"
