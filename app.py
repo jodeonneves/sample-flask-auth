@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from models.user import User
 from database import db
-from flask_login import LoginManager, login_user, logout_user, login_required ,current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 
 app = Flask(__name__)
@@ -43,7 +43,22 @@ def login():
 def logout():
      logout_user()
      return jsonify({"message": "Logout realizado com sucesso!"})
+
+
+@app.route('/user', methods=["POST"])
+def create_user():
+     data = request.json
+     username = data.get("username")
+     password = data.get("password")
+
+     if username and password:
+          user = User(username=username, password=password)
+          db.session.add(user)
+          db.session.commit()
+          return jsonify({"message": "Usuario cadastrado com sucesso!"})
      
+     return jsonify({"message": "Dados invalidos."}), 400
+
 
 @app.route("/ola-mundo", methods=["GET"])
 def ola_mundo():
