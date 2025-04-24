@@ -60,6 +60,17 @@ def create_user():
      return jsonify({"message": "Dados invalidos."}), 400
 
 
+@app.route('/user/<int:id_user>', methods=["GET"])
+@login_required
+def read_user(id_user):
+     user = User.query.get(id_user)
+
+     if user:
+          return {"username": user.username}
+     
+     return jsonify({"message": "Usuario não encontrado!"}), 404
+     
+
 @app.route("/ola-mundo", methods=["GET"])
 def ola_mundo():
     return "óla mundo"
